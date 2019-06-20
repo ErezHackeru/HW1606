@@ -1,0 +1,80 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace HW1606_Tasks
+{
+    class Program
+    {
+        static ManualResetEvent Manualgate = new ManualResetEvent(false);
+        static AutoResetEvent Autogate = new AutoResetEvent(false);
+
+        public static void CreateUser()
+        {
+            Thread.Sleep(400);
+            Autogate.WaitOne();
+            //Manualgate.WaitOne();
+            Console.WriteLine("Creating user");
+            Autogate.Set();
+        }
+
+        public static void CreateOrder()
+        {
+            Thread.Sleep(400);
+            Autogate.WaitOne();
+            //Manualgate.WaitOne();
+            Console.WriteLine("Creating Order");
+            Autogate.Set();
+        }
+
+        public static void DeleteOrder()
+        {
+            Thread.Sleep(400);
+            Autogate.WaitOne();
+            //Manualgate.WaitOne();
+            Console.WriteLine("Delete Order");
+            Autogate.Set();
+        }
+
+        public static void DeleteUser()
+        {
+            Thread.Sleep(400);
+            Autogate.WaitOne();
+            //Manualgate.WaitOne();
+            Console.WriteLine("Delete User");
+            Autogate.Set();
+        }
+
+        public static void UpdateUser()
+        {
+            Thread.Sleep(400);
+            Autogate.WaitOne();
+            //Manualgate.WaitOne();
+            Console.WriteLine("Update User");
+            Autogate.Set();
+        }
+
+        //this function should end first:
+        public static void ConnectToDb()
+        {
+            Thread.Sleep(4000);
+            Console.WriteLine("Connecting to DB...");
+            //Manualgate.Set();
+            Autogate.Set();
+        }
+
+        static void Main(string[] args)
+        {
+            new Thread(CreateUser).Start();
+            new Thread(CreateOrder).Start();            
+            new Thread(DeleteOrder).Start();
+            new Thread(DeleteUser).Start();
+            new Thread(UpdateUser).Start();
+
+            ConnectToDb();
+        }
+    }
+}
