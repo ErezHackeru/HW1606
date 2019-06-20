@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Task_WaitAny
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Random r = new Random();
+            int rand1 = r.Next(1000, 2001), rand2 = r.Next(1000, 2001);
+            Task<int> t1 = new Task<int>(() =>
+            {
+                rand1 = r.Next(1000, 2001);
+                Thread.Sleep(rand1);
+                Console.WriteLine($"task {Thread.CurrentThread.ManagedThreadId}, random num is {rand1}");
+                return rand1;
+            });
+            
+            Task<int> t2 = new Task<int>(() =>
+            {
+                rand2 = r.Next(1000, 2001);
+                Thread.Sleep(rand2);
+                Console.WriteLine($"task {Thread.CurrentThread.ManagedThreadId}, random num is {rand2}");
+                return rand2;
+            });
+            t1.Start();
+            t2.Start();
+
+            Task.WaitAll(t1,t2);
+
+            //Console.WriteLine($"result is : {t1.Result}");
+            //Console.WriteLine($"result is : {t2.Result}");
+
+            
+        }
+    }
+}
